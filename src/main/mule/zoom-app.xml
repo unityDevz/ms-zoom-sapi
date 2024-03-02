@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="64eaf6fa-48fd-4dd8-9fba-24ce99a51cd1" >
+		<http:listener-connection host="localhost" port="8087" />
+	</http:listener-config>
+	<flow name="zoom-appFlow" doc:id="4473175b-1833-46d9-9bc7-429757d45e92" >
+		<http:listener doc:name="Listener" doc:id="c149a8ca-093e-4254-b3c1-63b96747f609" config-ref="HTTP_Listener_config" path="/redirect"/>
+		<logger level="INFO" doc:name="Logger" doc:id="3bdd2646-d3e5-4895-9cb0-0f0d5b74c5a4" message="Request Recieved"/>
+	</flow>
+</mule>
