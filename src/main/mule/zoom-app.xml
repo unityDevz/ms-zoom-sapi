@@ -1,14 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="64eaf6fa-48fd-4dd8-9fba-24ce99a51cd1" >
 		<http:listener-connection host="localhost" port="8087" />
 	</http:listener-config>
+	<http:request-config name="http_zoom_request_token_configuration" doc:name="HTTP Request configuration" doc:id="87944707-85a2-4ac8-b950-b616c893529d" basePath="/oauth" >
+		<http:request-connection protocol="HTTPS" host="zoom.us" port="443" >
+			<reconnection >
+				<reconnect />
+			</reconnection>
+			<http:authentication >
+				<http:basic-authentication username="ePQ6vMWjT3aiByK_2IhfiQ" password="18eOLCgFThukzpm158OHhiYIOoilttM6" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="http_zoom_request_configuration" doc:name="HTTP Request configuration" doc:id="6c0d46f6-fec1-4a6a-8a92-f91d604e1e89" basePath="/v2" >
+		<http:request-connection protocol="HTTPS" host="api.zoom.us" port="443" />
+	</http:request-config>
 	<flow name="zoom-appFlow" doc:id="4473175b-1833-46d9-9bc7-429757d45e92" >
-		<http:listener doc:name="Listener" doc:id="c149a8ca-093e-4254-b3c1-63b96747f609" config-ref="HTTP_Listener_config" path="/redirect"/>
-		<logger level="INFO" doc:name="Logger" doc:id="3bdd2646-d3e5-4895-9cb0-0f0d5b74c5a4" message="Request Recieved"/>
+		<http:listener doc:name="Listener" doc:id="c149a8ca-093e-4254-b3c1-63b96747f609" config-ref="HTTP_Listener_config" path="/redirect/*"/>
+		<ee:transform doc:name="Prepare Request" doc:id="2bec06d0-f2d5-4d46-89dd-8fd7897f9c05" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/x-www-form-urlencoded
+---
+{
+	"grant_type": "account_credentials",
+	"account_id": "GE9u4sGUTM-Cn-eeeOWvog"
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="meetingId" ><![CDATA[payload.meetingId]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="Get Zoom Token" doc:id="16ee35ce-a7a2-499b-88f4-1cf4f9b20bb2" name="zoom_token_subflow"/>
+		<http:request method="GET" doc:name="Get Mettings Details" doc:id="4d41a4ba-2da6-49f1-9426-7c055b444ead" config-ref="http_zoom_request_configuration" path="meetings/{meetingId}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Authorization" : "bearer " ++ vars.token
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	meetingId : vars.meetingId
+}]]]></http:uri-params>
+		</http:request>
+		<logger level="INFO" doc:name="Log" doc:id="3bdd2646-d3e5-4895-9cb0-0f0d5b74c5a4" message="Meetings Details Recieved"/>
 	</flow>
 </mule>

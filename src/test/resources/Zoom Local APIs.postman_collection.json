@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "c43bc914-778e-4ffa-ac45-4d5463236290",
+		"name": "Zoom Local APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28607380"
+	},
+	"item": [
+		{
+			"name": "Zoom Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic QXozdlR0eVNoeW0wTTJ6VFVIZlF3Olh2S0xQYXVseWVwSDNhaTBzSzUxNkhTYVFpaW13cVoz",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:8087/redirect",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "82Ea1yvXW6vM7CgSGy1RZa3h4P_AN8pfw",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://zoom.us/oauth/token",
+					"protocol": "https",
+					"host": [
+						"zoom",
+						"us"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get/Create Meetings",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJzdiI6IjAwMDAwMSIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6Ijk4YTU1ODJhLTA5MzAtNGE1Zi04YjJhLTAyMTBlZGI0YjEyYyJ9.eyJ2ZXIiOjksImF1aWQiOiJkMmYzNGE0OWIyYmU1ZjlkMDU5OTA1NDIwOTRkMWQyOSIsImNvZGUiOiI4MkVhMXl2WFc2dk03Q2dTR3kxUlphM2g0UF9BTjhwZnciLCJpc3MiOiJ6bTpjaWQ6QXozdlR0eVNoeW0wTTJ6VFVIZlF3IiwiZ25vIjowLCJ0eXBlIjowLCJ0aWQiOjAsImF1ZCI6Imh0dHBzOi8vb2F1dGguem9vbS51cyIsInVpZCI6Ik5BNTZlNE9BUm51SnFHdnMzTmZJZVEiLCJuYmYiOjE3MDkzNzE2MDIsImV4cCI6MTcwOTM3NTIwMiwiaWF0IjoxNzA5MzcxNjAyLCJhaWQiOiJHRTl1NHNHVVRNLUNuLWVlZU9Xdm9nIn0.LlKsg6tSNC4Hn4epkBsVjzH6e5UxTdRwvDljlJo_HAeUK2c5rcnAJdAG6AbHsQmqM2K4PT6mlQSq9c7sc5wADg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.zoom.us/v2/users/me/meetings",
+					"protocol": "https",
+					"host": [
+						"api",
+						"zoom",
+						"us"
+					],
+					"path": [
+						"v2",
+						"users",
+						"me",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Schedule Meetings",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJzdiI6IjAwMDAwMSIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6IjM2NmU1M2YxLTk3YjgtNDAwOS1iMjFiLWVlOWI0MWQ4MzA3OCJ9.eyJhdWQiOiJodHRwczovL29hdXRoLnpvb20udXMiLCJ1aWQiOiJOQTU2ZTRPQVJudUpxR3ZzM05mSWVRIiwidmVyIjo5LCJhdWlkIjoiMDc2YzcyNDRhMzIzNTY3YWI5ZTExZWRjZGRjMWY3MGMiLCJuYmYiOjE3MDkzNzY0NTMsImNvZGUiOiJDdTgtTno4NFIwLWRBNW9zUmYzX1h3a3NwQnFqaHIya2EiLCJpc3MiOiJ6bTpjaWQ6ZVBRNnZNV2pUM2FpQnlLXzJJaGZpUSIsImdubyI6MCwiZXhwIjoxNzA5MzgwMDUzLCJ0eXBlIjozLCJpYXQiOjE3MDkzNzY0NTMsImFpZCI6IkdFOXU0c0dVVE0tQ24tZWVlT1d2b2cifQ.oOpriMOaIGfnbij9YPZNhntXbOMI9UUVXmnYuEq3WM0epKX9urJ-eSgcllGR7QVcLz3W9K0hKzEWZMDyeNLmew",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"attendees\": [\r\n        {\r\n            \"name\": \"Jill Chill\"\r\n        }\r\n    ],\r\n    \"ttl\": 1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.zoom.us/v2/meetings/8150746836",
+					"protocol": "https",
+					"host": [
+						"api",
+						"zoom",
+						"us"
+					],
+					"path": [
+						"v2",
+						"meetings",
+						"8150746836"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Server to Server Oauth",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "18eOLCgFThukzpm158OHhiYIOoilttM6",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ePQ6vMWjT3aiByK_2IhfiQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "account_credentials",
+							"type": "text"
+						},
+						{
+							"key": "account_id",
+							"value": "GE9u4sGUTM-Cn-eeeOWvog",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://zoom.us/oauth/token",
+					"protocol": "https",
+					"host": [
+						"zoom",
+						"us"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Anypoint Studio Call",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingId\": 8150746836\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/redirect",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"redirect"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

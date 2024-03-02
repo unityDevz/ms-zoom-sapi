@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="zoom_token_subflow" doc:id="69c1319f-747c-4d4b-b713-2d6dd0597bc6" >
+		<http:request method="POST" doc:name="Zoom Token Call" doc:id="be7f08d2-0d3a-4467-9b45-8e13b30ff4da" config-ref="http_zoom_request_token_configuration" path="/token"/>
+		<set-variable value="#[payload.access_token]" doc:name="token" doc:id="d97b6acf-477e-4610-96d4-214792f9457a" variableName="token"/>
+	</sub-flow>
+</mule>
