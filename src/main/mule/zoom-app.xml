@@ -51,6 +51,19 @@ output application/x-www-form-urlencoded
 	meetingId : vars.meetingId
 }]]]></http:uri-params>
 		</http:request>
+		<file:write doc:name="To XLSX" doc:id="b6c498f0-b20f-4add-8ced-822a61479174" path="C:\Users\Nishant Raizada\Desktop\test.csv">
+			<file:content ><![CDATA[#[%dw 2.0
+output application/csv
+var pai = [payload]
+---
+pai map ((item, index) -> {
+    "id": item.id,
+    "host_id": item.host_id,
+    "timezone": item.timezone,
+    "join_url": item.join_url,
+    "agenda": item.agenda
+})]]]></file:content>
+		</file:write>
 		<logger level="INFO" doc:name="Log" doc:id="3bdd2646-d3e5-4895-9cb0-0f0d5b74c5a4" message="Meetings Details Recieved"/>
 	</flow>
 </mule>
